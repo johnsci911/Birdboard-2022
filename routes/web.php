@@ -17,7 +17,13 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/projects', [ProjectsController::class, 'index']);
-Route::get('/projects/{project}', [ProjectsController::class, 'show']);
+Route::group(['middleware' => 'auth'], function () {
+	Route::get('/projects', [ProjectsController::class, 'index']);
+	Route::get('/projects/{project}', [ProjectsController::class, 'show']);
+	Route::post('/projects', [ProjectsController::class, 'store']);
 
-Route::post('/projects', [ProjectsController::class, 'store']);
+	Route::get('/home', 'HomeController@index')->name('home');
+});
+
+Auth::routes();
+
