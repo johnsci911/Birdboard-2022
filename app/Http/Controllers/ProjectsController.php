@@ -8,30 +8,35 @@ use Auth;
 class ProjectsController extends Controller
 {
     public function index()
-	{
-		$projects = Auth::user()->projects;
+    {
+        $projects = Auth::user()->projects;
 
-		return view('projects.index', compact('projects'));
-	}
+        return view('projects.index', compact('projects'));
+    }
 
-	public function show(Project $project)
-	{
-		if (Auth::user()->isNot($project->owner)) {
-			abort(403);
-		}
+    public function show(Project $project)
+    {
+        if (Auth::user()->isNot($project->owner)) {
+            abort(403);
+        }
 
-		return view('projects.show', compact('project'));
-	}
+        return view('projects.show', compact('project'));
+    }
 
-	public function store()
-	{
-		Auth::user()->projects()->create(
-			request()->validate([
-				'title' => 'required',
-				'description' => 'required',
-			])
-		);
+    public function store()
+    {
+        $attributes = request()->validate([
+            'title' => 'required',
+            'description' => 'required',
+        ]);
 
-		return redirect('/projects');
-	}
+        Auth::user()->projects()->create($attributes);
+
+        return redirect('/projects');
+    }
+
+    public function create()
+    {
+        return view('projects.create');
+    }
 }
