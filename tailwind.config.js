@@ -2,7 +2,8 @@ const defaultColors = require('tailwindcss/colors')
 
 let colors = {
 	...defaultColors,
-    'grey-light': '#F5F6F9',
+	'grey': 'rgba(0, 0, 0, 0.4)',
+  'grey-light': '#F5F6F9',
 }
 
 module.exports = {
@@ -18,5 +19,5 @@ module.exports = {
     },
     extend: {},
   },
-  plugins: [],
+  plugins: []
 }
