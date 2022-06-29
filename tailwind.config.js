@@ -1,3 +1,10 @@
+const defaultColors = require('tailwindcss/colors')
+
+let colors = {
+	...defaultColors,
+    'grey-light': '#F5F6F9',
+}
+
 module.exports = {
   content: [
     "./resources/**/*.blade.php",
@@ -5,10 +12,7 @@ module.exports = {
     "./resources/**/*.vue",
   ],
   theme: {
-    colors: {
-      'grey-light': '#F5F6F9',
-      'white': '#FFFFFF'
-    },
+    colors: colors,
     shadows: {
       default: '0 0 5px 0 rgba(0, 0, 0, 0.08)'
     },
