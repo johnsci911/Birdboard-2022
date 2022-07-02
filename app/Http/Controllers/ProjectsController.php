@@ -32,7 +32,7 @@ class ProjectsController extends Controller
 
         $project = Auth::user()->projects()->create($attributes);
 
-        return redirect($project->path);
+        return redirect($project->path());
     }
 
     public function create()
