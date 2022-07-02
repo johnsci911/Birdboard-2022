@@ -2,7 +2,7 @@
 
 @section('content')
     <form method="POST" action="{{ route('register') }}"
-          class="lg:w-1/2 lg:mx-auto bg-white py-12 px-16 rounded shadow"
+          class="lg:w-1/2 lg:mx-auto bg-white py-12 px-4 md:px-16 rounded shadow"
     >
         @csrf
 
