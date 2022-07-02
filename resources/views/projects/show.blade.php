@@ -16,9 +16,11 @@
         <div class="mb-8">
           <h2 class="text-grey text-lg font-normal mb-3">Tasks</h2>
 
-          <div class="mb-3 card">lorem ipsum dolor sit amet, consectetur adip</div>
-          <div class="mb-3 card">lorem ipsum dolor sit amet, consectetur adip</div>
-          <div class="mb-3 card">lorem ipsum dolor sit amet, consectetur adip</div>
+          @forelse ($project->tasks as $task)
+            <div class="mb-3 card">{{ $task->body }}</div>
+          @empty
+            <div class="mb-3 card">No tasks</div>
+          @endforelse
         </div>
 
         <div>
