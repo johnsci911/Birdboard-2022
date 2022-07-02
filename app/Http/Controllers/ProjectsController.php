@@ -27,10 +27,24 @@ class ProjectsController extends Controller
     {
         $attributes = request()->validate([
             'title' => 'required',
-            'description' => 'required',
+            'description' => 'required|max:100',
+            'notes' => 'max:255'
         ]);
 
         $project = Auth::user()->projects()->create($attributes);
+
+        return redirect($project->path());
+    }
+
+    public function update(Project $project)
+    {
+        if (Auth::user()->isNot($project->owner)) {
+            abort(403);
+        }
+
+        $project->update([
+            'notes' => request('notes')
+        ]);
 
         return redirect($project->path());
     }
