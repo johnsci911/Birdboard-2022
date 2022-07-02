@@ -3,7 +3,6 @@
 namespace Tests\Feature;
 
 use App\Project;
-use App\User;
 use Auth;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -38,7 +37,7 @@ class ManageProjectsTest extends TestCase
             'description' => $this->faker->paragraph
         ];
 
-        $this->post('/projects', $attributes)->assertRedirect('/projects');
+        $this->post('/projects', $attributes)->assertRedirect('/projects/1');
 
         $this->assertDatabaseHas('projects', $attributes);
 
