@@ -2,10 +2,9 @@
 
 namespace Tests\Feature;
 
-use App\Project;
-use Auth;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Setup\ProjectFactory;
 
 class ProjectTasksTest extends TestCase
 {
@@ -14,11 +13,9 @@ class ProjectTasksTest extends TestCase
     /** @test */
     function a_project_can_have_tasks()
     {
-        $this->signIn();
-
-        $project = factory(Project::class)->create([
-            'owner_id' => auth()->id()
-        ]);
+        $project = app(ProjectFactory::class)
+            ->ownedBy($this->signIn())
+            ->create();
 
         $this->post($project->path() . '/tasks', [
             'body' => 'Test task'
@@ -31,15 +28,12 @@ class ProjectTasksTest extends TestCase
     /** @test */
     public function a_task_can_be_updated()
     {
-        $this->signIn();
+        $project = app(ProjectFactory::class)
+            ->ownedBy($this->signIn())
+            ->withTasks(1)
+            ->create();
 
-        $project = Auth::user()->projects()->create(
-            factory(Project::class)->raw()
-        );
-
-        $task = $project->addTask('Test task');
-
-        $this->patch($project->path() . '/tasks/' . $task->id, [
+        $this->patch($project->tasks[0]->path(), [
             'body' => 'Changed',
             'completed' => true
         ]);
@@ -55,9 +49,8 @@ class ProjectTasksTest extends TestCase
     {
         $this->signIn();
 
-        $project = factory(Project::class)->create([
-            'owner_id' => auth()->id()
-        ]);
+        $project = app(ProjectFactory::class)->ownedBy($this->signIn())
+            ->create();
 
         $attributes = factory('App\Task')->raw([
             'body' => ''
@@ -72,7 +65,9 @@ class ProjectTasksTest extends TestCase
     {
         $this->signIn();
 
-        $project = factory(Project::class)->create();
+        $project = app(ProjectFactory::class)
+            ->withTasks(1)
+            ->create();
 
         $this->post($project->path() . '/tasks', [
             'body' => 'Test task'
@@ -88,11 +83,11 @@ class ProjectTasksTest extends TestCase
     {
         $this->signIn();
 
-        $project = factory('App\Project')->create();
+        $project = app(ProjectFactory::class)
+            ->withTasks(1)
+            ->create();
 
-        $task = $project->addTask('Test task');
-
-        $this->patch($task->path(), ['body' => 'Changed'])
+        $this->patch($project->tasks[0]->path(), ['body' => 'Changed'])
             ->assertStatus(403);
 
         $this->assertDatabaseMissing('tasks', [
