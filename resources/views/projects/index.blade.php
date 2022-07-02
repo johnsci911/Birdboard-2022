@@ -14,7 +14,7 @@
         @include('projects.card')
       </div>
     @empty
-      <div>No projects yet</div>
+      <div class="mx-3">No projects yet</div>
     @endforelse
   </main>
 @endsection
