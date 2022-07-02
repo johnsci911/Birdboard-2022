@@ -16,11 +16,14 @@
         <div class="mb-8">
           <h2 class="text-grey text-lg font-normal mb-3">Tasks</h2>
 
-          @forelse ($project->tasks as $task)
+          @foreach ($project->tasks as $task)
             <div class="mb-3 card">{{ $task->body }}</div>
-          @empty
-            <div class="mb-3 card">No tasks</div>
-          @endforelse
+          @endforeach
+
+          <form action="{{ $project->path() . '/tasks' }}" method="POST">
+            @csrf
+            <input class="mb-3 card w-full" placeholder="Add a new task..." name="body"></input>
+          </form>
         </div>
 
         <div>
