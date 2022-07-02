@@ -95,6 +95,15 @@ class ManageProjectsTest extends TestCase
     }
 
     /** @test */
+    public function an_authenticated_user_cannot_update_project_of_others()
+    {
+        $this->signIn();
+
+        $project = factory(Project::class)->create();
+
+        $this->patch($project->path(), [])->assertStatus(403);
+    }
+    /** @test */
     public function a_project_requires_a_title()
     {
         $this->signIn();
