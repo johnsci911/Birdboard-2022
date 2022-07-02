@@ -822,5 +822,10 @@ video {
   .lg\:flex-wrap {
     flex-wrap: wrap;
   }
+
+  .lg\:px-16 {
+    padding-left: 4rem;
+    padding-right: 4rem;
+  }
 }
 
