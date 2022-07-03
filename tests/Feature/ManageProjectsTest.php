@@ -3,7 +3,6 @@
 namespace Tests\Feature;
 
 use App\Project;
-use Auth;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -61,9 +60,7 @@ class ManageProjectsTest extends TestCase
             'title' => 'Changed',
             'description' => 'Changed',
             'notes' => 'Changed'
-        ])->assertRedirect($project->path());
-
-        $this->get($project->path() . '/edit')->assertOk();
+        ]);
 
         $this->assertDatabaseHas('projects', $attributes);
     }
@@ -118,5 +115,19 @@ class ManageProjectsTest extends TestCase
         $attributes = factory(Project::class)->raw(['description' => '']);
 
         $this->post('/projects', $attributes)->assertSessionHasErrors('description');
+    }
+
+    /** @test */
+    public function a_user_can_update_a_projects_general_notes()
+    {
+        $project = app(ProjectFactory::class)
+            ->ownedBy($this->signIn())
+            ->create();
+
+        $this->patch($project->path(), $attributes = [
+            'notes' => 'Changed'
+        ]);
+
+        $this->assertDatabaseHas('projects', $attributes);
     }
 }
