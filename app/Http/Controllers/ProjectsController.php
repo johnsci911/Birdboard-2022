@@ -24,7 +24,9 @@ class ProjectsController extends Controller
 
     public function store()
     {
-        $project = Auth::user()->projects()->create($this->validateRequest());
+		$project = Auth::user()
+			->projects()
+			->create($this->validateRequest());
 
         return redirect($project->path());
     }
