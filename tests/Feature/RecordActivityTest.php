@@ -6,7 +6,7 @@ use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\Setup\ProjectFactory;
 
-class ActivityFeedTest extends TestCase
+class RecordActivityTest extends TestCase
 {
 	use RefreshDatabase;
 
