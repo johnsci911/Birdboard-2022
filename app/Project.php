@@ -6,17 +6,17 @@ use Illuminate\Database\Eloquent\Model;
 
 class Project extends Model
 {
-	protected $guarded = [];
+    protected $guarded = [];
 
-	public function path()
-	{
-		return "/projects/$this->id";
-	}
+    public function path()
+    {
+        return "/projects/$this->id";
+    }
 
-	public function owner()
-	{
-		return $this->belongsTo(User::class);
-	}
+    public function owner()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     public function tasks()
     {
@@ -25,16 +25,16 @@ class Project extends Model
 
     public function addTask($body)
     {
-		return $this->tasks()->create(compact('body'));
+        return $this->tasks()->create(compact('body'));
     }
 
-	public function activity()
-	{
-		return $this->hasMany(Activity::class)->latest();
-	}
+    public function activity()
+    {
+        return $this->hasMany(Activity::class)->latest();
+    }
 
-	public function recordActivity($description)
-	{
-		$this->activity()->create(compact('description'));
-	}
+    public function recordActivity($description)
+    {
+        $this->activity()->create(compact('description'));
+    }
 }

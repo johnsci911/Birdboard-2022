@@ -1,1 +1,1 @@
-You completed a tesk
+You completed {{ $activity->subject->body }}
