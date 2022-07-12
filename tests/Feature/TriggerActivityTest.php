@@ -6,12 +6,12 @@ use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\Setup\ProjectFactory;
 
-class RecordActivityTest extends TestCase
+class TriggerActivityTest extends TestCase
 {
 	use RefreshDatabase;
 
 	/** @test */
-	function creating_a_project_record_activity()
+	function creating_a_project()
 	{
 		$project = app(ProjectFactory::class)->create();
 
@@ -20,7 +20,7 @@ class RecordActivityTest extends TestCase
 	}
 
 	/** @test */
-	function updating_a_project_record_activity()
+	function updating_a_project()
 	{
 		$project = app(ProjectFactory::class)->create();
 
@@ -33,7 +33,7 @@ class RecordActivityTest extends TestCase
 	}
 
 	/** @test */
-	function creating_a_new_task_records_project_activity()
+	function creating_a_new_task()
 	{
 		$project = app(ProjectFactory::class)->create();
 
@@ -44,7 +44,7 @@ class RecordActivityTest extends TestCase
 	}
 
 	/** @test */
-	function completing_a_new_task_records_project_activity()
+	function completing_a_task()
 	{
 		$project = app(ProjectFactory::class)->withTasks(1)->create();
 
@@ -56,5 +56,38 @@ class RecordActivityTest extends TestCase
 
 		$this->assertCount(3, $project->activity);
 		$this->assertEquals('completed_task', $project->activity->last()->description);
+	}
+
+	/** @test */
+	function incompleting_a_task()
+	{
+		$project = app(ProjectFactory::class)->withTasks(1)->create();
+
+		$this->actingAs($project->owner)
+			->patch($project->tasks[0]->path(), [
+				'body' => 'foobar',
+				'completed' => true
+			]);
+
+		$this->assertCount(3, $project->activity);
+
+		$this->patch($project->tasks[0]->path(), [
+			'body' => 'foobar',
+			'completed' => false
+		]);
+
+		$project->refresh();
+
+		$this->assertCount(4, $project->activity);
+		$this->assertEquals('incompleted_task', $project->activity->last()->description);
+	}
+
+	function deleting_a_task()
+	{
+		$project = app(ProjectFactory::class)->withTasks(1)->create();
+
+		$project->tasks[0]->delete();
+
+		$this->assertCount(3, $project->activity);
 	}
 }
