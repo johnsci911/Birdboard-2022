@@ -60,7 +60,7 @@ class ManageProjectsTest extends TestCase
             'title' => 'Changed',
             'description' => 'Changed',
             'notes' => 'Changed'
-        ]);
+        ])->assertRedirect($project->path());
 
         $this->assertDatabaseHas('projects', $attributes);
     }

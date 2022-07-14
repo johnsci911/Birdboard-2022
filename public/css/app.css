@@ -625,6 +625,9 @@ video {
 .mb-0 {
   margin-bottom: 0px;
 }
+.mb-1 {
+  margin-bottom: 0.25rem;
+}
 .block {
   display: block;
 }
@@ -759,7 +762,6 @@ video {
   --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
-
 @media (min-width: 768px) {
 
   .md\:px-16 {
@@ -772,7 +774,6 @@ video {
     padding-right: 0px;
   }
 }
-
 @media (min-width: 1024px) {
 
   .lg\:mx-auto {
