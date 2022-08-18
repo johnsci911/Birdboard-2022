@@ -29,6 +29,12 @@ trait RecordsActivity
         }
     }
 
+	/**
+	 * Get the description of the activity.
+	 *
+  	 * @param string $description
+  	 * @return string
+	**/
     protected function activityDescription($description)
     {
         return "{$description}_" . strtolower(class_basename($this));
