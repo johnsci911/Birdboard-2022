@@ -11,7 +11,6 @@
 |
 */
 
-use App\Http\Controllers\ProjectsController;
 use App\Http\Controllers\ProjectTasksController;
 
 Route::get('/', function () {
