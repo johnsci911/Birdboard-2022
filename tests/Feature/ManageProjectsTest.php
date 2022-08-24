@@ -158,4 +158,16 @@ class ManageProjectsTest extends TestCase
 
         $this->assertDatabaseHas('projects', $attributes);
     }
+
+	/** @test */
+	public function a_user_can_see_all_projects_they_have_been_invited_to_on_their_dashboard()
+	{
+		// Given we're signed in
+		// and we've been invited to a project that was not created by us
+		$project = tap(app(ProjectFactory::class)->create())->invite($this->signIn());
+
+		// when I visit my dashboard, I should see my project
+		$this->get('/projects')
+			->assertSee($project->title);
+	}
 }
