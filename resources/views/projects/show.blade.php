@@ -6,23 +6,23 @@
       <p class="text-grey text-sm font-normal mb-4">
         <a href="/projects" class="text-grey text-sm font-normal no-underline">My projects</a> / {{ $project->title }}
       </p>
- 			<div class="flex items-center">
-				@foreach ($project->members as $member)
-					<img
-						src="{{ gravatar_url($member->email) }}"
-						alt="{{ $member->name }}'s avatar"
-						class="rounded-full w-8 mr-2"
-					>
-				@endforeach
+      <div class="flex items-center">
+        @foreach ($project->members as $member)
+          <img
+            src="{{ gravatar_url($member->email) }}"
+            alt="{{ $member->name }}'s avatar"
+            class="rounded-full w-8 mr-2"
+          >
+        @endforeach
 
-				<img
-					src="{{ gravatar_url($project->owner->email) }}"
-					alt="{{ $project->owner->name }}'s avatar"
-					class="rounded-full w-8 mr-2"
-				>
+        <img
+          src="{{ gravatar_url($project->owner->email) }}"
+          alt="{{ $project->owner->name }}'s avatar"
+          class="rounded-full w-8 mr-2"
+        >
 
-      	<a href="{{ $project->path() . '/edit' }}" class="button ml-6">Edit Project</a>
- 			</div>
+        <a href="{{ $project->path() . '/edit' }}" class="button ml-6">Edit Project</a>
+      </div>
     </div>
   </header>
 
@@ -67,22 +67,19 @@
             <button class="button" type="submit">Save</button>
           </form>
 
-          @if ($errors->any())
-            <div class="field mt-6">
-              @foreach ($errors->all() as $error)
-                <li class="text-sm text-red-700">{{ $error }}</li>
-              @endforeach
-            </div>
-          @endif
-
+          @include('errors')
         </div>
       </div>
       <div class="lg:w-1/4 px-3">
         @include('projects.card')
         @include('projects.activity.card')
+
+        @can ('manage', $project)
+          @include('projects.invite')
+        @endcan
       </div>
     </div>
   </main>
-
 </body>
 @endsection
+
