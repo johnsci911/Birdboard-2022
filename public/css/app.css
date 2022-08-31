@@ -631,6 +631,9 @@ video {
 .mb-1 {
   margin-bottom: 0.25rem;
 }
+.mr-3 {
+  margin-right: 0.75rem;
+}
 .block {
   display: block;
 }

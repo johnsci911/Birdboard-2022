@@ -17,7 +17,7 @@
     <div id="app">
       <nav class="bg-white px-4 md:px-0">
         <div class="container mx-auto">
-          <div class="flex justify-between items-center py-2">
+          <div class="flex flex-col md:flex-row justify-between items-center py-2">
             <a class="navbar-brand" href="{{ url('/') }}">
               <img src="/images/logo.svg" alt="Birdboard">
             </a>
@@ -36,9 +36,13 @@
                     </li>
                   @endif
                 @else
-                  <li class="nav-item dropdown">
+                  <li class="nav-item dropdown flex items-center">
                     <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                      {{ Auth::user()->name }} <span class="caret"></span>
+                      <img
+                        width="35"
+                        src="{{ gravatar_url(auth()->user()->email) }}"
+                        alt="profile-picture" class="rounded-full mr-3"
+                      >
                     </a>
 
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
