@@ -7,7 +7,7 @@
     @csrf
 
     <div class="mb-3">
-      <input type="email" name="email" class="border border-slate-300 rounded w-full py-2 px-3" placeholder="Email address">
+      <input type="email" name="email" class="bg-card border border-slate-300 rounded w-full py-2 px-3" placeholder="Email address">
     </div>
 
     <button type="submit" class="button">Invite</button>

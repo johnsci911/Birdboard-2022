@@ -3,8 +3,8 @@
 @section('content')
   <header class="flex items-center mb-3 py-4">
     <div class="flex flex-col md:flex-row justify-between items-center w-full">
-      <p class="text-grey text-sm font-normal mb-4">
-        <a href="/projects" class="text-grey text-sm font-normal no-underline">My projects</a> / {{ $project->title }}
+      <p class="text-default text-sm font-normal mb-4">
+        <a href="/projects" class="text-default text-sm font-normal no-underline">My projects</a> / {{ $project->title }}
       </p>
       <div class="flex items-center">
         @foreach ($project->members as $member)
@@ -30,7 +30,7 @@
     <div class="lg:flex -mx-3">
       <div class="lg:w-3/4 px-3 mb-6">
         <div class="mb-8">
-          <h2 class="text-grey text-lg font-normal mb-3">Tasks</h2>
+          <h2 class="text-default text-lg font-normal mb-3">Tasks</h2>
 
           @foreach ($project->tasks as $task)
             <div class="mb-3 card">
@@ -38,7 +38,7 @@
                 @method('PATCH')
                 @csrf
                 <div class="flex">
-                  <input value="{{ $task->body }}" name="body" class="w-full {{ $task->completed ? 'text-grey' : '' }}"></input>
+                  <input value="{{ $task->body }}" name="body" class="bg-card w-full {{ $task->completed ? 'text-slate-500 line-through' : '' }}"></input>
                   <input type="checkbox" name="completed" onChange="this.form.submit()" {{ $task->completed ? 'checked' : '' }}></input>
                 </div>
               </form>
@@ -52,7 +52,7 @@
         </div>
 
         <div>
-          <h2 class="text-grey text-lg font-normal mb-3">General Notes</h2>
+          <h2 class="text-default text-lg font-normal mb-3">General Notes</h2>
 
           <form action="{{ $project->path() }}" method="POST">
             @method('PATCH')
