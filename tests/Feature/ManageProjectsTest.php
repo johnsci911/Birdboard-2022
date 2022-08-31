@@ -31,19 +31,8 @@ class ManageProjectsTest extends TestCase
 
         $this->get('/projects/create')->assertStatus(200);
 
-        $attributes = [
-            'title' => $this->faker->sentence,
-            'description' => $this->faker->sentence,
-            'notes' => 'General notes here'
-        ];
-
-        $response = $this->post('/projects', $attributes);
-
-        $project = Project::where($attributes)->first();
-
-        $response->assertRedirect($project->path());
-
-        $this->get($project->path())
+        $this->followingRedirects()
+            ->post('/projects', $attributes = factory(Project::class)->raw())
             ->assertSee($attributes['title'])
             ->assertSee($attributes['description'])
             ->assertSee($attributes['notes']);
@@ -73,9 +62,14 @@ class ManageProjectsTest extends TestCase
         $this->delete($project->path())
             ->assertRedirect('/login');
 
-        $this->signIn();
+        $user = $this->signIn();
 
         $this->delete($project->path())
+            ->assertStatus(403);
+
+        $project->invite($user);
+
+        $this->actingAs($user)->delete($project->path())
             ->assertStatus(403);
     }
 
@@ -159,15 +153,15 @@ class ManageProjectsTest extends TestCase
         $this->assertDatabaseHas('projects', $attributes);
     }
 
-	/** @test */
-	public function a_user_can_see_all_projects_they_have_been_invited_to_on_their_dashboard()
-	{
-		// Given we're signed in
-		// and we've been invited to a project that was not created by us
-		$project = tap(app(ProjectFactory::class)->create())->invite($this->signIn());
+    /** @test */
+    public function a_user_can_see_all_projects_they_have_been_invited_to_on_their_dashboard()
+    {
+        // Given we're signed in
+        // and we've been invited to a project that was not created by us
+        $project = tap(app(ProjectFactory::class)->create())->invite($this->signIn());
 
-		// when I visit my dashboard, I should see my project
-		$this->get('/projects')
-			->assertSee($project->title);
-	}
+        // when I visit my dashboard, I should see my project
+        $this->get('/projects')
+            ->assertSee($project->title);
+    }
 }
