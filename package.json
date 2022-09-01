@@ -27,6 +27,7 @@
         "vue-template-compiler": "^2.6.14"
     },
     "dependencies": {
+        "postcss-nesting": "^10.1.10",
         "tailwind": "^4.0.0"
     },
     "resolutions": {

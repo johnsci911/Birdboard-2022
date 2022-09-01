@@ -1,4 +1,4 @@
-.button {
+a.button,  button.button {
   border-radius: 0.5rem;
   background-color: var(--button-background-color);
   padding-top: 0.5rem;
@@ -617,9 +617,6 @@ body,  button {
 }
 .relative {
   position: relative;
-}
-.m-2 {
-  margin: 0.5rem;
 }
 .mx-auto {
   margin-left: auto;
