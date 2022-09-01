@@ -1,85 +1,91 @@
-@extends('layouts.app')
+@extends ('layouts.app')
 
 @section('content')
-  <header class="flex items-center mb-3 py-4">
-    <div class="flex flex-col md:flex-row justify-between items-center w-full">
-      <p class="text-default text-sm font-normal mb-4">
-        <a href="/projects" class="text-default text-sm font-normal no-underline">My projects</a> / {{ $project->title }}
-      </p>
-      <div class="flex items-center">
-        @foreach ($project->members as $member)
-          <img
-            src="{{ gravatar_url($member->email) }}"
-            alt="{{ $member->name }}'s avatar"
-            class="rounded-full w-8 mr-2"
-          >
-        @endforeach
+    <header class="flex items-center mb-6 pb-4">
+        <div class="flex justify-between items-end w-full">
+            <p class="text-muted font-light">
+                <a href="/projects" class="text-muted no-underline hover:underline">My Projects</a>
+                / {{ $project->title }}
+            </p>
 
-        <img
-          src="{{ gravatar_url($project->owner->email) }}"
-          alt="{{ $project->owner->name }}'s avatar"
-          class="rounded-full w-8 mr-2"
-        >
+            <div class="flex items-center">
+                @foreach ($project->members as $member)
+                    <img
+                        src="{{ gravatar_url($member->email) }}"
+                        alt="{{ $member->name }}'s avatar"
+                        class="rounded-full w-8 mr-2">
+                @endforeach
 
-        <a href="{{ $project->path() . '/edit' }}" class="button ml-6">Edit Project</a>
-      </div>
-    </div>
-  </header>
+                <img
+                    src="{{ gravatar_url($project->owner->email) }}"
+                    alt="{{ $project->owner->name }}'s avatar"
+                    class="rounded-full w-8 mr-2">
 
-  <main>
-    <div class="lg:flex -mx-3">
-      <div class="lg:w-3/4 px-3 mb-6">
-        <div class="mb-8">
-          <h2 class="text-default text-lg font-normal mb-3">Tasks</h2>
-
-          @foreach ($project->tasks as $task)
-            <div class="mb-3 card">
-              <form method="POST" action="{{ $task->path() }}">
-                @method('PATCH')
-                @csrf
-                <div class="flex">
-                  <input value="{{ $task->body }}" name="body" class="bg-card w-full {{ $task->completed ? 'text-slate-500 line-through' : '' }}"></input>
-                  <input type="checkbox" name="completed" onChange="this.form.submit()" {{ $task->completed ? 'checked' : '' }}></input>
-                </div>
-              </form>
+                <a href="{{ $project->path().'/edit' }}" class="button ml-4">Edit Project</a>
             </div>
-          @endforeach
-
-          <form action="{{ $project->path() . '/tasks' }}" method="POST">
-            @csrf
-            <input class="mb-3 card w-full" placeholder="Add a new task..." name="body"></input>
-          </form>
         </div>
+    </header>
 
-        <div>
-          <h2 class="text-default text-lg font-normal mb-3">General Notes</h2>
+    <main>
+        <div class="lg:flex -mx-3">
+            <div class="lg:w-3/4 px-3 mb-6">
+                <div class="mb-8">
+                    <h2 class="text-lg text-muted font-light mb-3">Tasks</h2>
 
-          <form action="{{ $project->path() }}" method="POST">
-            @method('PATCH')
-            @csrf
-            <textarea
-              name="notes"
-              class="card w-full mb-4"
-              style="min-height: 200px;"
-              placeholder="Add notes..."
-            >{{ $project->notes }}</textarea>
+                    {{-- tasks --}}
+                    @foreach ($project->tasks as $task)
+                        <div class="card mb-3">
+                            <form method="POST" action="{{ $task->path() }}">
+                                @method('PATCH')
+                                @csrf
 
-            <button class="button" type="submit">Save</button>
-          </form>
+                                <div class="flex items-center">
+                                    <input name="body" value="{{ $task->body }}" class="text-default bg-card w-full {{ $task->completed ? 'line-through text-muted' : '' }}">
+                                    <input name="completed" type="checkbox" onChange="this.form.submit()" {{ $task->completed ? 'checked' : '' }}>
+                                </div>
+                            </form>
+                        </div>
+                    @endforeach
 
-          @include('errors')
+                    <div class="card mb-3">
+                        <form action="{{ $project->path() . '/tasks' }}" method="POST">
+                            @csrf
+
+                            <input placeholder="Add a new task..." class="text-default bg-card w-full" name="body">
+                        </form>
+                    </div>
+                </div>
+
+                <div>
+                    <h2 class="text-lg text-muted font-light mb-3">General Notes</h2>
+
+                    {{-- general notes --}}
+                    <form method="POST" action="{{ $project->path() }}">
+                        @csrf
+                        @method('PATCH')
+
+                        <textarea
+                            name="notes"
+                            class="card text-default w-full mb-4"
+                            style="min-height: 200px"
+                            placeholder="Anything special that you want to make a note of?"
+                        >{{ $project->notes }}</textarea>
+
+                        <button type="submit" class="button">Save</button>
+                    </form>
+
+                    @include ('errors')
+                </div>
+            </div>
+
+            <div class="lg:w-1/4 px-3 lg:py-8">
+                @include ('projects.card')
+                @include ('projects.activity.card')
+
+                @can ('manage', $project)
+                    @include ('projects.invite')
+                @endcan
+            </div>
         </div>
-      </div>
-      <div class="lg:w-1/4 px-3">
-        @include('projects.card')
-        @include('projects.activity.card')
-
-        @can ('manage', $project)
-          @include('projects.invite')
-        @endcan
-      </div>
-    </div>
-  </main>
-</body>
+    </main>
 @endsection
-

@@ -9,12 +9,13 @@ module.exports = {
   theme: {
     colors: {
       ...defaultColors,
-      'grey'       : 'rgba(0, 0, 0, 0.4)',
+      grey: 'rgba(0, 0, 0, 0.4)',
       'grey-light' : '#F5F6F9',
-      'blue'       : '#47cdff',
+      blue: '#47cdff',
       'blue-light' : '#8ae2fe',
     },
     backgroundColor: {
+      ...defaultColors,
       'page' : 'var(--page-background-color)',
       'card' : 'var(--card-background-color)',
       'button' : 'var(--button-background-color)',
@@ -22,7 +23,11 @@ module.exports = {
     },
     textColor: {
       ...defaultColors,
-      'default' : 'var(--text-default-color)',
+      default: 'var(--text-default-color)',
+      accent: 'var(--text-accent-color)',
+      'accent-light': 'var(--text-accent-light-color)',
+      muted: 'var(--text-muted-color)',
+      'muted-light': 'var(--text-muted-light-color)',
     },
     shadows: {
       default: '0 0 5px 0 rgba(0, 0, 0, 0.08)'
